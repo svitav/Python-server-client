@@ -9,24 +9,40 @@ port = 2205
 global clients
 clients = {}
 serversocket.bind((host, port))
-def listener():
+"""def listener():
     global clients
     while True:
         serversocket.listen()
         clientsocket, addr = serversocket.accept()
         print(str(addr[0])+" joined!!")
         clients[len(clients) + 1] = ({"socket": clientsocket, "addr": addr})
+        threading.Thread(None, clientThread).start()
 
-threading.Thread(None, listener).start()
+threading.Thread(None, listener).start()"""
 
 
-print("main")
+
 
 sleep(2)
+def clientThread(socket, addr):
+    socket.send(bytes("Welcome!", "ascii"))
+    while True:
+        try:
+            msg = clients[x]["socket"].recv(1024)
+            if msg:
+                msg = msg.decode("ascii")
+                print("<" + addr + "> " + msg)
+                msg = "<" + addr + "> " + msg
+                #broadcast(msg, socket)
+                clients[x].sendall(bytes(msg))
+        except:
+            pass
 
 while True:
-    for x in range(len(clients)):
-        msg = clients[x].recv(1024)
-        print(msg.decode("ascii"))
-        clients[x].sendall(bytes(client[x]["addr"]+": "+msg))
+    serversocket.listen()
+    clientsocket, addr = serversocket.accept()
+    print(str(addr[0])+" joined!!")
+    clients[len(clients) + 1] = ({"socket": clientsocket, "addr": addr})
+    threading.Thread(None, clientThread, args=(clientsocket, addr)).start()
+
 #clientsocket.close()
