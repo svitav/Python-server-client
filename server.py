@@ -29,21 +29,29 @@ def clientThread(socket, addr):
     while True:
         try:
             msg = socket.recv(1024)
+            
             if msg:
                 msg = msg.decode("ascii")
-                print("<" + addr + "> " + msg)
-                msg = "<" + addr + "> " + msg
+                print("<" + str(addr[0]) + "> " + msg)
+                msg = "<" + str(addr[0]) + "> " + msg
                 #broadcast(msg, socket)
                 for x in clients:
-                    clients[x].send(bytes(msg, "ascii"))
+                    clients[x].sendall(bytes(msg, "ascii"))
+            else:
+                remove(socket)    
         except:
             continue
+
+def remove(socket):
+    if socket in clients:
+        clients.remove(socket)
+        socket.close()
 
 while True:
     serversocket.listen()
     clientsocket, addr = serversocket.accept()
-    print(str(addr[0])+" joined!!")
+    print(str(addr[0])+":"+str(addr[1])+" joined!!")
     clients.append(clientsocket)
     threading.Thread(None, clientThread, args=(clientsocket, addr)).start()
 
-#clientsocket.close()
+
