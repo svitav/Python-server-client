@@ -32,11 +32,11 @@ def clientThread(socket, addr):
             
             if msg:
                 msg = msg.decode("ascii")
-                print("<" + str(addr[0]) + "> " + msg)
-                msg = "<" + str(addr[0]) + "> " + msg
+                print("<"+str(addr[0])+":"+str(addr[1])+"> " + msg)
+                msg = "<"+str(addr[0])+":"+str(addr[1])+"> " + msg
                 #broadcast(msg, socket)
                 for x in clients:
-                    clients[x].sendall(bytes(msg, "ascii"))
+                    x.sendall(bytes(msg, "ascii"))
             else:
                 remove(socket)    
         except:
