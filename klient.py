@@ -1,5 +1,5 @@
 import socket
-import threading
+from threading import Thread
 import os
 from time import sleep
 
@@ -30,14 +30,11 @@ def listener():
     global name
     while True:
         msg = s.recv(1024)
-        msg = msg.decode('ascii')
-        """if "<"+name+">" in msg:
-            msg.replace(name, "<YOU>")
-            print(msg)"""
+        msg = msg.decode('ascii')   
         
         print(msg)
 
-threading.Thread(None, listener).start()
+Thread(None, listener).start()
 
 
 

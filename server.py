@@ -1,5 +1,5 @@
 import socket
-import threading
+from threading import Thread
 from time import sleep
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -47,6 +47,6 @@ while True:
     clientsocket, addr = serversocket.accept()
     print(str(addr[0])+":"+str(addr[1])+" joined!!")
     clients.append(clientsocket)
-    threading.Thread(None, clientThread, args=(clientsocket, addr)).start()
+    Thread(None, clientThread, args=(clientsocket, addr)).start()
 
 
