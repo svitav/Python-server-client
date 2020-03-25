@@ -2,9 +2,10 @@ import socket
 from threading import Thread
 import os
 from time import sleep
+import tkinter
 
-
-
+window = tkinter.Tk()
+window.title("Chat")
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -27,20 +28,43 @@ os.system("cls")
 
 
 def listener():
-    global name
     while True:
-        msg = s.recv(1024)
-        msg = msg.decode('ascii')   
+        try:
+            msg = s.recv(1024)
+            msg = msg.decode('ascii')   
+            msg_list.insert(tkinter.END, msg)
+        except OSError:
+            break
         
-        print(msg)
 
 Thread(None, listener).start()
 
 
 
-while True:
-    message = input("")
+def sendMsg(event=None):
+    message = msg.get()
+    msg.set("")
     s.send(bytes(message, "ascii"))
-    
+    if message == "/quit":
+        s.send(bytes(message, "ascii"))
+        s.close()
+        window.quit()
     #os.system("clear")
-s.close()
+
+
+messages = tkinter.Frame(window)
+msg = tkinter.StringVar()
+scrollbar = tkinter.Scrollbar(messages)
+msg_list = tkinter.Listbox(messages, height=15, width=50, yscrollcommand=scrollbar.set)
+scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
+msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
+msg_list.pack()
+messages.pack()
+
+textBox = tkinter.Entry(window, textvariable=msg)
+textBox.bind("<Return>", sendMsg)
+textBox.pack()
+sendButton = tkinter.Button(window, text="Send", command=sendMsg)
+sendButton.pack()
+
+window.mainloop()

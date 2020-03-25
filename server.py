@@ -12,6 +12,9 @@ serversocket.bind((host, port))
 
 
 sleep(2)
+
+print("Server initialized!!")
+
 def clientThread(socket, addr):
     name = socket.recv(1024)
     name = name.decode("ascii")
@@ -22,6 +25,10 @@ def clientThread(socket, addr):
             
             if msg:
                 msg = msg.decode("ascii")
+                if msg == "/quit":
+                    print(name+" left")
+                    socket.close()
+                    break
                 print("<"+name+"> " + msg)
                 msgToSend = "<"+name+"> " + msg
                 #broadcast(msg, socket)
