@@ -31,7 +31,6 @@ def clientThread(socket, addr):
                     break
                 print("<"+name+"> " + msg)
                 msgToSend = "<"+name+"> " + msg
-                #broadcast(msg, socket)
                 for x in clients:
                     if x == socket:
                         selfMsg = "<YOU> " + msg
