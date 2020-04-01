@@ -3,10 +3,28 @@ from threading import Thread
 import os
 from time import sleep
 import tkinter
+import tkinter as tk
+
+class Inputbox():
+    def __init__(self, text=""):
+        self.root = tk.Tk()
+        self.get = ""
+        self.root.geometry("300x100")
+        self.root.title("Inputbox")
+        self.label_file_name = tk.Label(self.root, text=text)
+        self.label_file_name.pack()
+        self.entry = tk.Entry(self.root)
+        self.entry.pack()
+        self.entry.focus()
+        self.entry.bind("<Return>", lambda x: self.getinput(self.entry.get()))
+        self.root.mainloop()
+ 
+    def getinput(self, value):
+        self.get = value
+        self.root.destroy()
+ 
 
 
-window = tkinter.Tk()
-window.title("Chat")
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -15,32 +33,14 @@ port = 2205
 
 s.connect((host, port))
 
+sleep(0.5)
 
 #print("Please put in a username")
-
-def getinput():
-    name = entry.get()
-    root.destroy()
-    return name
-
-root = tkinter.Tk()
-root.geometry("300x50")
-root.title("Nickname")
-label_file_name = tkinter.Label(root, text="Please input your username")
-label_file_name.pack()
-entry = tkinter.Entry(root)
-entry.pack()
-entry.focus()
-entry.bind("<Return>", lambda x: getinput())
-root.mainloop()
-
-name = getinput()
-s.send(bytes(name, "ascii"))
-print("Name set!")
-sleep(0.5)
-print("Have fun!!")
-sleep(2)
+inp = Inputbox(text="Vloz svuj nick")
+name = inp.get
+s.send(bytes(name, "utf8"))
 os.system("cls")
+
 
 
 
@@ -48,7 +48,7 @@ def listener():
     while True:
         try:
             msg = s.recv(1024)
-            msg = msg.decode('ascii')   
+            msg = msg.decode('utf8')   
             msg_list.insert(tkinter.END, msg)
         except OSError:
             break
@@ -61,18 +61,16 @@ Thread(None, listener).start()
 def sendMsg(event=None):
     message = msg.get()
     msg.set("")
-    s.send(bytes(message, "ascii"))
-    if message == "/quit":
-        s.send(bytes(message, "ascii"))
-        s.close()
-        window.quit()
-    #os.system("clear")
+    s.send(bytes(message, "utf8"))
+    
 
-
+window = tkinter.Tk()
+window.title("Chat")
 messages = tkinter.Frame(window)
 msg = tkinter.StringVar()
 scrollbar = tkinter.Scrollbar(messages)
 msg_list = tkinter.Listbox(messages, height=15, width=50, yscrollcommand=scrollbar.set)
+msg_list.insert(tkinter.END, "Name set, have fun!!")
 scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
 msg_list.pack()

@@ -4,7 +4,7 @@ import os
 from time import sleep
 import tkinter
 import tkinter as tk
-import input
+
 
 window = tkinter.Tk()
 window.title("Chat")
@@ -19,7 +19,7 @@ s.connect((host, port))
 sleep(0.5)
 global name
 #print("Please put in a username")
-name = input.inp.get
+name = inp.inp.get
 s.send(bytes(name, "ascii"))
 print("Name set!")
 sleep(0.5)
