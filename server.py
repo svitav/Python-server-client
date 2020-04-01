@@ -6,7 +6,7 @@ import logging
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-logging.basicConfig(filename="log.txt", format='%(asctime)s - %(message)s', level=logging.INFO)
+logging.basicConfig(filename="log.txt", format='%(asctime)s - %(message)s', level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S')
 
 
 host = socket.gethostname()
@@ -36,7 +36,7 @@ def clientThread(socket, addr):
                 msgToSend = "<"+name+"> " + msg
                 for x in clients:
                     if x == socket:
-                        selfMsg = "<YOU> " + msg
+                        selfMsg = "<You> " + msg
                         x.sendall(bytes(selfMsg, "utf8"))
                     else:
                         x.sendall(bytes(msgToSend, "utf8"))
