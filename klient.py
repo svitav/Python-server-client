@@ -3,7 +3,7 @@ from threading import Thread
 import os
 from time import sleep
 import tkinter
-import input
+
 
 window = tkinter.Tk()
 window.title("Chat")
@@ -15,10 +15,26 @@ port = 2205
 
 s.connect((host, port))
 
-sleep(0.5)
-global name
+
 #print("Please put in a username")
-name = input.Input()
+
+def getinput():
+    name = entry.get()
+    root.destroy()
+    return name
+
+root = tkinter.Tk()
+root.geometry("300x50")
+root.title("Nickname")
+label_file_name = tkinter.Label(root, text="Please input your username")
+label_file_name.pack()
+entry = tkinter.Entry(root)
+entry.pack()
+entry.focus()
+entry.bind("<Return>", lambda x: getinput())
+root.mainloop()
+
+name = getinput()
 s.send(bytes(name, "ascii"))
 print("Name set!")
 sleep(0.5)
