@@ -5,7 +5,7 @@ from time import sleep
 import tkinter
 import tkinter as tk
 
-class Inputbox():
+class Inputbox():      #trida pro nastaveni jmena
     def __init__(self, text=""):
         self.root = tk.Tk()
         self.get = ""
@@ -44,7 +44,7 @@ os.system("cls")
 
 
 
-def listener():
+def listener():      #vlakno pro prijem zprav
     while True:
         try:
             msg = s.recv(1024)
@@ -58,13 +58,13 @@ Thread(None, listener).start()
 
 
 
-def sendMsg(event=None):
+def sendMsg(event=None):      #funkce pro odeslani zpravy
     message = msg.get()
     msg.set("")
     s.send(bytes(message, "utf8"))
     
 
-window = tkinter.Tk()
+window = tkinter.Tk()      #hlavni okno aplikace
 window.title("Chat")
 messages = tkinter.Frame(window)
 msg = tkinter.StringVar()
