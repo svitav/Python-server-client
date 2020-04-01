@@ -20,5 +20,5 @@ class Inputbox():
  
  
 inp = Inputbox(text="Vloz svuj nick")
-print(inp.get)
-print("fuck")
+#print(inp.get)
+
