@@ -3,6 +3,7 @@ from threading import Thread
 import os
 from time import sleep
 import tkinter
+import input
 
 window = tkinter.Tk()
 window.title("Chat")
@@ -16,8 +17,8 @@ s.connect((host, port))
 
 sleep(0.5)
 global name
-print("Please put in a username")
-name = input("->")
+#print("Please put in a username")
+name = input.Input()
 s.send(bytes(name, "ascii"))
 print("Name set!")
 sleep(0.5)
